@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from collections import OrderedDict
 import datetime
+import os
 import sys
 
 from peewee import *
@@ -23,17 +24,23 @@ def initialize():
     db.create_tables([Entry], safe=True)
 
 
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 def menu_loop():
     """Show the menu."""
     choice = None
 
     while choice != 'q':
+        clear()
         print("Enter 'q' to quit.")
         for key, value in menu.items():
             print('{}) {}'.format(key,value.__doc__))
         choice = input('Action: ').lower().strip()
 
         if choice in menu:
+            clear()
             menu[choice]()
 
 
@@ -57,9 +64,11 @@ def view_entries(search_query=None):
 
     for entry in entries:
         timestamp = entry.timestamp.strftime('%A %B %d, %Y %I:%M%p')
+        clear()
         print(timestamp)
         print('='*len(timestamp))
         print(entry.content)
+        print('\n\n'+'='*len(timestamp))
         print('N) next entry')
         print('d) delete entry')
         print('q) return to main menu')
